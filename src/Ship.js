@@ -2,6 +2,9 @@ function Ship(itinerary){
     this.itinerary = itinerary;
     this.currentPort = itinerary.ports[0]
     this.previousPort = null
+
+    this.currentPort.addShip(this)
+
 }
 
 Ship.prototype = {
@@ -15,12 +18,17 @@ Ship.prototype = {
 
         this.previousPort = this.currentPort
         this.currentPort = null
+
+        
+        indexShip = this.previousPort.ships.indexOf(this)
+        this.previousPort.ships.splice(indexShip, 1)
     },
     dock(){
         const itinerary = this.itinerary
         const previousPortIndex = itinerary.ports.indexOf(this.previousPort)
 
         this.currentPort = itinerary.ports[previousPortIndex + 1]
+        this.currentPort.addShip(this)
     }
 }
 module.exports = Ship

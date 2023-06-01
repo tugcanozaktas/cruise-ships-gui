@@ -28,6 +28,7 @@ describe("Ship", ()=>{
       
         ship.setSail();
       
+        expect(ship.previousPort.ships).not.toContain(ship)
         expect(ship.currentPort).toBeFalsy();
       });
 
@@ -41,6 +42,7 @@ describe("Ship", ()=>{
         ship.dock();
 
         expect(ship.currentPort).toBe(amsterdam)
+        expect(ship.currentPort.ships).toContain(ship)
 
     })
 
@@ -54,5 +56,13 @@ describe("Ship", ()=>{
         ship.dock();
 
         expect(()=> ship.setSail()).toThrowError("End of itinerary reached.");
+    })
+
+    it("gets added on instantation", ()=>{
+        const amsterdam = new Port("Amsterdam")
+        const itinerary = new Itinerary([amsterdam])
+        const ship = new Ship(itinerary)
+        
+        expect(ship.currentPort.ships).toContain(ship)
     })
 });
