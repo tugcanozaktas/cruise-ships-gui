@@ -13,24 +13,31 @@ describe("Port", ()=>{
 
         expect(port.name).toBe("Berlin")
     })
+})
+
+describe("for itinerary and ships", ()=>{
+    let berlin;
+    let itinerary;
+    let berlinShip;
+
+    beforeEach(()=>{
+        berlin = new Port("Berlin")
+        itinerary = new Itinerary([berlin])
+        berlinShip = new Ship(itinerary)
+    })
+
 
     it("can add ships", ()=>{
-        const berlin = new Port("Berlin")
-        const itinerary = new Itinerary([berlin])
-        const berlinShip = new Ship(itinerary)
-
         expect(berlin.ships).toContain(berlinShip)
-
     })
 
     it("can remove ships", ()=>{
-        const berlin = new Port("Berlin")
-        const itinerary = new Itinerary([berlin])
-        const berlinShip = new Ship(itinerary)
 
         berlin.removeShip(berlinShip)
-
         expect(berlin.ships).not.toContain(berlinShip)
 
-    })
+    });
+
+    
+
 })

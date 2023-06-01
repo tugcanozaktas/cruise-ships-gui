@@ -5,32 +5,63 @@ const Ship = require("../src/Ship")
 
 describe("Ship", ()=>{
     
-    it("can be instantiated", ()=>{
-        const port = new Port("Dover")
-        const itinerary = new Itinerary([port])
-        const ship = new Ship(itinerary)
+    let port;
+    let itinerary;
+    let ship;
+    
+    beforeEach(()=>{
+        port = new Port("Dover")
+        itinerary = new Itinerary([port])
+        ship = new Ship(itinerary)
+    })
 
+
+    it("can be instantiated", ()=>{
         expect(ship).toBeInstanceOf(Object)
     })
 
     it("has a starting port", ()=>{
-        const port = new Port("Dover")
-        const itinerary = new Itinerary([port])
-        const ship = new Ship(itinerary)
-
         expect(ship.currentPort).toBe(port)
     })
+    
+    it("gets added on instantation", ()=>{
+        expect(ship.currentPort.ships).toContain(ship)
+    })
+});
+
+
+describe("with ports and itinerary", ()=>{
+    
+    let ship;
+    let dover;
+    let amsterdam;
+    let itinerary;
+
+    beforeEach(()=>{
+        dover = new Port("Dover")
+        amsterdam = new Port("Amsterdam")
+        itinerary = new Itinerary([dover, amsterdam])
+        ship = new Ship(itinerary)
+    })
+
     it('can set sail', () => {
-        const dover = new Port('Dover');
-        const amsterdam = new Port("Amsterdam")
-        const itinerary = new Itinerary([dover, amsterdam]);
-        const ship = new Ship(itinerary);
-      
         ship.setSail();
       
         expect(ship.previousPort.ships).not.toContain(ship)
         expect(ship.currentPort).toBeFalsy();
       });
+
+    it("can\'t sail futher than itinerary", ()=>{
+        const dover = new Port("Dover")
+        const amsterdam = new Port("Amsterdam")
+        const itinerary = new Itinerary([dover, amsterdam])
+        const ship = new Ship(itinerary)
+
+        ship.setSail();
+        ship.dock();
+
+        expect(()=> ship.setSail()).toThrowError("End of itinerary reached.");
+        });
 
     it("can dock to another port", ()=>{
         const dover = new Port("Dover")
@@ -45,24 +76,4 @@ describe("Ship", ()=>{
         expect(ship.currentPort.ships).toContain(ship)
 
     })
-
-    it("can\'t sail futher than itinerary", ()=>{
-        const dover = new Port("Dover")
-        const amsterdam = new Port("Amsterdam")
-        const itinerary = new Itinerary([dover, amsterdam])
-        const ship = new Ship(itinerary)
-
-        ship.setSail();
-        ship.dock();
-
-        expect(()=> ship.setSail()).toThrowError("End of itinerary reached.");
-    })
-
-    it("gets added on instantation", ()=>{
-        const amsterdam = new Port("Amsterdam")
-        const itinerary = new Itinerary([amsterdam])
-        const ship = new Ship(itinerary)
-        
-        expect(ship.currentPort.ships).toContain(ship)
-    })
-});
+})
