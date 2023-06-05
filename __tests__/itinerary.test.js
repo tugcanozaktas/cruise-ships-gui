@@ -7,8 +7,8 @@ describe("itinerary", ()=>{
     })
 
     it("should have ports", ()=>{
-        const dover = new Port("Dover")
-        const amsterdam = new Port("Dover")
+        const dover = jest.fn();
+        const amsterdam = jest.fn();
 
         const itinerary = new Itinerary([dover, amsterdam]);
 

@@ -16,25 +16,24 @@ describe("Port", ()=>{
 })
 
 describe("for itinerary and ships", ()=>{
+    let ship;
     let berlin;
-    let itinerary;
-    let berlinShip;
 
     beforeEach(()=>{
         berlin = new Port("Berlin")
-        itinerary = new Itinerary([berlin])
-        berlinShip = new Ship(itinerary)
+        ship = jest.fn()
+        berlin.addShip(ship)
     })
 
 
     it("can add ships", ()=>{
-        expect(berlin.ships).toContain(berlinShip)
+        expect(berlin.ships).toContain(ship)
     })
 
     it("can remove ships", ()=>{
 
-        berlin.removeShip(berlinShip)
-        expect(berlin.ships).not.toContain(berlinShip)
+        berlin.removeShip(ship)
+        expect(berlin.ships).not.toContain(ship)
 
     });
 
