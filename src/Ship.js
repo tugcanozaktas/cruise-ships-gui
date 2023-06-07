@@ -19,14 +19,14 @@ Ship.prototype = {
         this.previousPort = this.currentPort
         this.currentPort = null
 
-        
-        indexShip = this.previousPort.ships.indexOf(this)
-        this.previousPort.ships.splice(indexShip, 1)
+        if(this.previousPort){
+            this.previousPort.removeShip(this)
+        }
+
     },
     dock(){
         const itinerary = this.itinerary
         const previousPortIndex = itinerary.ports.indexOf(this.previousPort)
-
         this.currentPort = itinerary.ports[previousPortIndex + 1]
         this.currentPort.addShip(this)
     }

@@ -1,62 +1,73 @@
 /* globals describe it expect */
-const Itinerary = require("../src/itinerary");
-const Port = require("../src/Port");
 const Ship = require("../src/Ship")
 
 describe("Ship", ()=>{
     
-    let port;
-    let itinerary;
-    let ship;
-    
+    let dover;
+
     beforeEach(()=>{
-        port = new Port("Dover")
-        itinerary = new Itinerary([port])
+        dover = {
+            addShip: jest.fn(),
+            removeShip: jest.fn(),
+            name: "Dover",
+            ships: []
+        };
+
+        itinerary = {
+            ports: [dover]
+        }
+
         ship = new Ship(itinerary)
     })
-
 
     it("can be instantiated", ()=>{
         expect(ship).toBeInstanceOf(Object)
     })
 
     it("has a starting port", ()=>{
-        expect(ship.currentPort).toBe(port)
+        expect(ship.currentPort).toBe(dover)
     })
     
     it("gets added on instantation", ()=>{
-        expect(ship.currentPort.ships).toContain(ship)
+        expect(dover.addShip).toHaveBeenCalledWith(ship);
     })
 });
 
 
 describe("with ports and itinerary", ()=>{
-    
-    let ship;
     let dover;
     let amsterdam;
-    let itinerary;
 
-    beforeEach(()=>{
-        dover = new Port("Dover")
-        amsterdam = new Port("Amsterdam")
-        itinerary = new Itinerary([dover, amsterdam])
-        ship = new Ship(itinerary)
-    })
+    beforeEach(() => {
+        dover = {
+          addShip: jest.fn(),
+          removeShip: jest.fn(),
+          name: 'Dover',
+          ships: []
+        };
+      
+        amsterdam = {
+          addShip: jest.fn(),
+          removeShip: jest.fn(),
+          name: 'Amsterdam',
+          ships: []
+        };
+      
+        itinerary = {
+            ports: [dover, amsterdam]
+        }
+        ship = new Ship(itinerary);
+      });
 
     it('can set sail', () => {
         ship.setSail();
-      
-        expect(ship.previousPort.ships).not.toContain(ship)
+
         expect(ship.currentPort).toBeFalsy();
-      });
+        expect(dover.removeShip).toHaveBeenCalledWith(ship);
+    
+    });
 
     it("can\'t sail futher than itinerary", ()=>{
-        const dover = new Port("Dover")
-        const amsterdam = new Port("Amsterdam")
-        const itinerary = new Itinerary([dover, amsterdam])
-        const ship = new Ship(itinerary)
-
         ship.setSail();
         ship.dock();
 
@@ -64,16 +75,11 @@ describe("with ports and itinerary", ()=>{
         });
 
     it("can dock to another port", ()=>{
-        const dover = new Port("Dover")
-        const amsterdam = new Port("Amsterdam")
-        const itinerary = new Itinerary([dover, amsterdam])
-        const ship = new Ship(itinerary)
-
         ship.setSail();
         ship.dock();
 
         expect(ship.currentPort).toBe(amsterdam)
-        expect(ship.currentPort.ships).toContain(ship)
+        expect(amsterdam.addShip).toHaveBeenCalledWith(ship)
 
     })
 })

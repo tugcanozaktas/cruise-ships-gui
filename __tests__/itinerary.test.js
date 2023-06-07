@@ -1,5 +1,4 @@
 const Itinerary = require("../src/itinerary")
-const Port = require("../src/Port")
 
 describe("itinerary", ()=>{
     it("should be initialized", ()=>{
