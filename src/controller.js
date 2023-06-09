@@ -1,6 +1,13 @@
 (function exportController(){
-    function Controller(){
+    function Controller(ship){
+        this.ship = ship
+
         this.initialiseSea();
+
+
+        document.querySelector("#sailbutton").addEventListener("click", ()=>{
+            this.setSail();
+        });
     }
     
     Controller.prototype = {
@@ -36,6 +43,46 @@
 
                 
             });
+        },
+
+        renderShip(){
+            const ship = this.ship;
+
+            const currPortIndex = ship.itinerary.ports.indexOf(ship.currentPort)
+            const portDiv = document.querySelector(`[data-port-index='${currPortIndex}'`)
+
+
+            const shipDiv = document.querySelector("#ship");
+
+            shipDiv.style.top = `${portDiv.offsetTop+20}px`
+            shipDiv.style.left = `${portDiv.offsetLeft-20}px`
+        },
+
+        setSail(){
+            const ship = this.ship;
+
+            const currPortIndex = ship.itinerary.ports.indexOf(ship.currentPort);
+            const nextPortIndex = currPortIndex + 1;
+
+            const nextPortDiv = document.querySelector(`[data-port-index='${nextPortIndex}'`)
+
+            if(!nextPortDiv){
+                return alert("End of the itinerary!")
+            }
+
+
+            const shipDiv = document.querySelector("#ship");
+            const interval = setInterval(()=>{
+                const shipLeft = parseInt(shipDiv.style.left, 10);
+                if(shipLeft === (nextPortDiv.offsetLeft - 20)){
+                    ship.setSail();
+                    ship.dock();
+                    clearInterval(interval);
+                }
+
+                shipDiv.style.left = `${shipLeft + 1}px`
+            }, 10)
+
         }
     }
 

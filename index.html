@@ -7,24 +7,39 @@
     <title>Cruise Ships</title>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="viewport">
         <div id="ports"></div>
+        <div id="ship"></div>
+        <button id="sailbutton">Set Sail!</button>
     </div>
+
+    
 
     <script src="src/controller.js"></script>
     <script src="src/Port.js"></script>
     <script src="src/itinerary.js"></script>
-    <script> 
-        const controller = new Controller() 
-        const madrid = new Port("Madrid")
-        const amsterdam = new Port("Amsterdam")
-        const magusa = new Port("Magusa")
-        const sandiego = new Port("San Diego")
+    <script src="src/Ship.js"></script>
+    <script>
+        const itinerary = new Itinerary([
+        new Port("Madrid"),
+        new Port("Amsterdam"),
+        new Port("Magusa"),
+        new Port("San Diego")
+        ]);
 
-        const itinerary = new Itinerary([madrid, amsterdam, magusa, sandiego])
-        controller.renderPorts(itinerary.ports)
+
+        const ship = new Ship(itinerary)
+        const controller = new Controller(ship) ;
+        
+        controller.renderPorts(itinerary.ports);
+        controller.renderShip();
+    
+
     </script>
 </body>
 </html>

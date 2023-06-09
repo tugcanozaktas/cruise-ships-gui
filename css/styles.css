@@ -29,3 +29,31 @@ body{
     height: 32px;
     background-image: url("../images/port.png");
 }
+
+#ship{
+    background-image: url("../images/ship.png");
+    width: 128px;
+    height: 64px;
+    position: absolute;
+
+}
+
+#sailbutton{
+    position: fixed;
+    bottom: 356px;
+    left: 0;
+    width: 100%;
+    border: 0;
+    padding: 10px 20px;
+    border-bottom: 4px solid #d8040f;
+    background-color: #FB3640;
+    color: white;
+    font-size: 25px;
+    font-family: inherit;
+    font-family: 'Press Start 2P', cursive;
+}
+#sailbutton:focus {
+    background-color: #d8040f;
+    border-bottom-width: 0;
+    padding-top: 14px;
+  }
